@@ -34,7 +34,19 @@ namespace _123
 
         private void bt_DownloadRKK_Click(object sender, EventArgs e)
         {
+            string fileName;
 
+            RKKList = GetLinesFromFile(out fileName);
+
+            if (fileName != string.Empty)
+            {
+                label2.Text = Path.GetFileName(fileName);
+                MessageBox.Show($"Первая строка файла: {RKKList.FirstOrDefault()}");
+            }
+            else
+            {
+                MessageBox.Show("Файл не выбран");
+            }
         }
 
         private List<string> GetLinesFromFile(out string fileName)
@@ -55,5 +67,7 @@ namespace _123
             
             return null;
         }
+
+       
     }
 }

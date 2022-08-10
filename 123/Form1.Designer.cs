@@ -49,6 +49,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(612, 166);
             this.dataGridView1.TabIndex = 0;
+          
             // 
             // textBox1
             // 
