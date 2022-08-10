@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
@@ -13,59 +8,52 @@ namespace _123
 {
     public partial class Form1 : Form
     {
+        private List<string> ReqestsList;
+        private List<string> RKKList;
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void bt_DownloadReqests_Click(object sender, EventArgs e)
+        {
+            string fileName;
+
+            ReqestsList = GetLinesFromFile(out fileName);
+
+            if (fileName != string.Empty)
+            {
+                label1.Text = Path.GetFileName(fileName);
+                MessageBox.Show($"Первая строка файла: {ReqestsList.FirstOrDefault()}");
+            }                
+            else
+            {
+                MessageBox.Show("Файл не выбран");
+            }
+        }
+
+        private void bt_DownloadRKK_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private List<string> GetLinesFromFile(out string fileName)
         {
+            fileName = string.Empty;
+            using (var fileDialog = new OpenFileDialog())
+            {
+                fileDialog.Multiselect = false;
+                DialogResult dialogResult = fileDialog.ShowDialog();
+                if (dialogResult == DialogResult.OK)
+                {
+                    fileName = fileDialog.FileName;
+                }
+            }
 
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
+            if (fileName != string.Empty)
+                return File.ReadAllLines(fileName).ToList();
+            
+            return null;
         }
     }
 }
