@@ -76,6 +76,8 @@ namespace _123
 
             GetValuesFromReqests();
             GetValuesFromRKK();
+
+            //TODO: вывести табель в грид
         }
 
         private void GetValuesFromReqests()
