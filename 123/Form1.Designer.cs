@@ -56,7 +56,7 @@
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(147, 20);
             this.textBox1.TabIndex = 1;
-            this.textBox1.Text = "Название2 : ";
+            this.textBox1.Text = "Название2: ";
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // textBox2
@@ -125,7 +125,7 @@
             this.textBox4.ReadOnly = true;
             this.textBox4.Size = new System.Drawing.Size(147, 20);
             this.textBox4.TabIndex = 8;
-            this.textBox4.Text = "Назание1:";
+            this.textBox4.Text = "Название1:";
             this.textBox4.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
             // 
             // Form1
