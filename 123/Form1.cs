@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.IO;
 using TabelDoc.Models;
+using System.Text;
 
 namespace _123
 {
@@ -12,6 +13,7 @@ namespace _123
         private List<string> ReqestsList;
         private List<string> RKKList;
         private List<Tabel> Tabels;
+        
 
         public Form1()
         {
@@ -28,7 +30,7 @@ namespace _123
             {
                 label1.Text = Path.GetFileName(fileName);
                 ShowResult();
-            }                
+            }
             else
                 MessageBox.Show("Файл не выбран");
         }
@@ -63,10 +65,10 @@ namespace _123
 
             if (fileName != string.Empty)
                 return File.ReadAllLines(fileName).ToList();
-            
+
             return null;
         }
-        
+
         private void ShowResult()
         {
             if (RKKList == null || ReqestsList == null)
@@ -76,8 +78,9 @@ namespace _123
 
             GetValuesFromReqests();
             GetValuesFromRKK();
-
-            //TODO: вывести табель в грид
+            var source = new BindingSource();
+            source.DataSource = Tabels;
+            dataGridView1.DataSource = source;
         }
 
         private void GetValuesFromReqests()
@@ -90,6 +93,7 @@ namespace _123
                 if (Tabels.Any(x => x.FullName == otv))
                 {
                     Tabels.First(x => x.FullName == otv).Unfulfilledletter += 1;
+                    Tabels.First(x => x.FullName == otv).TotalNumber += 1;
                 }
                 else
                 {
@@ -110,6 +114,7 @@ namespace _123
                 if (Tabels.Any(x => x.FullName == otv))
                 {
                     Tabels.First(x => x.FullName == otv).UnfulfilledDoc += 1;
+                    Tabels.First(x => x.FullName == otv).TotalNumber += 1;
                 }
                 else
                 {
@@ -126,13 +131,50 @@ namespace _123
             List<string> otvList = new List<string>();
             var separator = new[] { '\t', ';' };
             var splitedLine = line.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+            if (splitedLine[0] != "Климов Сергей Александрович")
+                return ShortName(splitedLine[0].Trim());
+
             otvList.AddRange(splitedLine);
 
             var otv = otvList.FirstOrDefault(x => x.Contains(otvKey));
             if (otv != default)
                 return otv.Replace(otvKey, "").Trim();
+            
+            return ShortName(splitedLine[0].Trim());
 
-            return splitedLine[0].Trim();
+
+        }
+        private string ShortName(string fio)
+        {
+            string[] str = fio.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (str.Length != 3) throw new ArgumentException("ФИО задано в неверно формате");
+            return $"{str[0]} {str[1][0]}.{str[2][0]}";
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            int rowCounter = dataGridView1.RowCount;
+            int columnCount = dataGridView1.ColumnCount;
+            string[] line = new string[columnCount];
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "CSV Files (*.csv)|*.csv";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                using (StreamWriter writer = new StreamWriter(new FileStream(sfd.FileName, FileMode.OpenOrCreate), Encoding.UTF8))
+
+                {
+                    for (int i = 0; i < dataGridView1.RowCount; i++)
+                    {
+                        for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                        {
+                            line[j] = (dataGridView1.Rows[i].Cells[j].Value ?? "").ToString();
+                        }
+                        writer.WriteLine(string.Join(";", line));
+                    }
+                }
+            }
         }
     }
+
+
 }

@@ -49,7 +49,6 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(612, 166);
             this.dataGridView1.TabIndex = 0;
-          
             // 
             // textBox1
             // 
@@ -97,6 +96,7 @@
             this.button3.TabIndex = 5;
             this.button3.Text = "Скачать";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // textBox3
             // 
