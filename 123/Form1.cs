@@ -18,6 +18,7 @@ namespace _123
         public Form1()
         {
             InitializeComponent();
+            _binding = new BindingSource();
         }
 
         private void bt_DownloadReqests_Click(object sender, EventArgs e)
@@ -78,8 +79,6 @@ namespace _123
 
             GetValuesFromReqests();
             GetValuesFromRKK();
-            if (_binding == null)
-                _binding = new BindingSource();
 
             _binding.DataSource = Tabels;
             dataGridView1.DataSource = _binding;
@@ -101,6 +100,7 @@ namespace _123
                 {
                     tabel.FullName = otv;
                     tabel.Unfulfilledletter = 1;
+                    tabel.Number = Tabels.Count + 1;
                     Tabels.Add(tabel);
                 }
             }
@@ -122,6 +122,7 @@ namespace _123
                 {
                     tabel.FullName = otv;
                     tabel.UnfulfilledDoc = 1;
+                    tabel.Number = Tabels.Count + 1;
                     Tabels.Add(tabel);
                 }
             }
@@ -180,22 +181,26 @@ namespace _123
             switch (e.ColumnIndex)
             {
                 case 0:
-                    _binding.DataSource = Tabels.OrderBy(x => x.Number);
+                    Tabels = Tabels.OrderBy(x => x.Number).ToList();
+                    _binding.DataSource = Tabels;
                     break;
                 case 1:
-                    _binding.DataSource = Tabels.OrderBy(x => x.FullName);
+                    Tabels = Tabels.OrderBy(x => x.FullName).ToList();
+                    _binding.DataSource = Tabels;
                     break;
                 case 2:
-                    _binding.DataSource = Tabels.OrderBy(x => x.UnfulfilledDoc);
+                    Tabels = Tabels.OrderBy(x => x.UnfulfilledDoc).ToList();
+                    _binding.DataSource = Tabels;
                     break;
                 case 3:
-                    _binding.DataSource = Tabels.OrderBy(x => x.Unfulfilledletter);
+                    Tabels = Tabels.OrderBy(x => x.Unfulfilledletter).ToList();
+                    _binding.DataSource = Tabels;
                     break;
                 case 4:
-                    _binding.DataSource = Tabels.OrderBy(x => x.TotalNumber);
+                    Tabels = Tabels.OrderBy(x => x.TotalNumber).ToList();
+                    _binding.DataSource = Tabels;
                     break;
-            }
-            
+            }            
         }
     }
 
